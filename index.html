@@ -89,4 +89,26 @@
 
 		});
 
+		var setEvents = node
+				.on("mouseover", function(d) {
+					// select element in current context
+					d3.select( this).selectAll("image")
+							.transition()
+							.duration(700)
+							.attr("x", function(d) { return -(d.value*0.7);})
+							.attr("y", function(d) { return -(d.value*0.7);})
+							.attr("height", function(d) { return (d.value*1.4)})
+							.attr("width", function(d) { return (d.value*1.4)});
+				})
+				// set back
+				.on("mouseout", function() {
+					d3.select( this).selectAll("image")
+							.transition()
+							.attr("x", function(d) { return -(d.value/2);})
+							.attr("y", function(d) { return -(d.value/2);})
+							.attr("height", function(d) { return d.value})
+							.attr("width", function(d) { return d.value});
+				});
+	});
+
 </script>
