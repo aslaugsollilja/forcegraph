@@ -58,6 +58,17 @@
 			.attr("r", function(d) { return (d.value/2)})
 			.style("fill", function(d) { return color; });
 
+
+		node.append("title")
+			.text(function(d) { return d.name; });
+
+		node.append("svg:image")
+				.attr("xlink:href", function(d) {return d.photo;})
+				.attr("x", function(d) { return -(d.value/2);})
+				.attr("y", function(d) { return -(d.value/2);})
+				.attr("height", function(d) { return d.value})
+				.attr("width", function(d) { return d.value});
+
 		force.on("tick", function() {
 			link.attr("x1", function (d) {
 					return d.source.x;
