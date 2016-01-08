@@ -1,18 +1,18 @@
 {
   "nodes":[
-    {"name":"Aslaug Sollilja","group":1, "value": 120, "x" : 589, "y" : 282, "photo" : "aslaug.png" },
-    {"name":"linkedIn","group":1, "value": 100, "x" : 468, "y" : 166, "photo" : "http://my.berkeley.edu/images/content/pagebuilder/LinkedinIcon1.png", "goToLink" : "https://ca.linkedin.com/in/aslaugsollilja" },
-    {"name":"Twitter","group":1, "value" : 80, "x" : 425, "y" : 303, "photo" : "https://cdn3.iconfinder.com/data/icons/free-social-icons/67/twitter_circle_color-256.png", "goToLink" : "https://twitter.com/aslaugsollilja"},
-    {"name":"GitHub","group":1, "value" : 60, "x" : 533, "y" : 428, "photo" : "https://cdn.rawgit.com/dtgm/chocolatey-packages/c75f45774c122e8417e1c4df31c10cc59e934158/icons/github.png", "goToLink" : "https://github.com/aslaugsollilja/"},
-    {"name":"gmail","group":1, "value" : 45, "x" : 647, "y" : 136, "photo" : "http://findicons.com/files/icons/2788/circle/128/gmail.png", "goToLink" : "aslaugsollilja@gmail.com"}
+    {"name":"Aslaug Sollilja","group":1, "value": 120, "x" : 589, "y" : 282, "photo" : "images/aslaug.png" },
+    {"name":"linkedIn","group":1, "value": 100, "x" : 468, "y" : 166, "photo" : "images/LinkedinIcon.png", "url" : "https://ca.linkedin.com/in/aslaugsollilja" },
+    {"name":"Twitter","group":1, "value" : 80, "x" : 425, "y" : 303, "photo" : "images/twittericon.png", "url" : "https://twitter.com/aslaugsollilja"},
+    {"name":"GitHub","group":1, "value" : 60, "x" : 533, "y" : 428, "photo" : "images/githubicon.png", "url" : "https://github.com/aslaugsollilja/"},
+    {"name":"gmail","group":1, "value" : 45, "x" : 647, "y" : 136, "photo" : "images/gmailicon.png", "url" : "aslaugsollilja@gmail.com"}
 
 
   ],
   "links":[
     {"source":1,"target":0,"value":1},
-    {"source":2,"target":0,"value":8},
+    {"source":2,"target":0,"value":6},
     {"source":3,"target":0,"value":10},
-    {"source":4,"target":0,"value":1}
+    {"source":4,"target":0,"value":3}
 
   ]
 }
