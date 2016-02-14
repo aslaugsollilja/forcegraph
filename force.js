@@ -51,8 +51,8 @@
 				.attr("height", function(d) { return d.value})
 				.attr("width", function(d) { return d.value});
 
-        node.append("svg:a")
-                .attr("xlink:href", function(d) { return d.url;});
+		node.append("svg:a")
+				.attr("xlink:href", function(d) { return d.url;});
 
 		force.on("tick", function() {
 			link.attr("x1", function (d) {
@@ -76,34 +76,35 @@
 
 		var setEvents = node
 				.on("mouseover", function(d) {
+					
 					// select element in current context
 					d3.select(this).selectAll("image")
 							.transition()
 							.duration(700)
 							.attr("x", function(d) {
-                                if(d.value < 120){return -(d.value*0.7);}
-                                else{
-                                    return -(d.value/2);
-                                }
-                            })
+								if(d.value < 120){return -(d.value*0.7);}
+								else{
+									return -(d.value/2);
+								}
+							})
 							.attr("y", function(d) {
-                                if(d.value < 120){return -(d.value*0.7);}
-                                else{
-                                    return -(d.value/2);
-                                }
-                            })
+								if(d.value < 120){return -(d.value*0.7);}
+								else{
+									return -(d.value/2);
+								}
+							})
 							.attr("height", function(d) {
-                                if(d.value < 120){return (d.value*1.4);}
-                                else{
-                                    return d.value;
-                                }
-                            })
+								if(d.value < 120){return (d.value*1.4);}
+								else{
+									return d.value;
+								}
+							})
 							.attr("width", function(d) {
-                                if(d.value < 120){return (d.value*1.4);}
-                                else{
-                                    return d.value;
-                                }
-                            });
+								if(d.value < 120){return (d.value*1.4);}
+								else{
+									return d.value;
+								}
+							});
 				})
 				// set back
 				.on("mouseout", function() {
@@ -114,8 +115,9 @@
 							.attr("height", function(d) { return d.value})
 							.attr("width", function(d) { return d.value});
 				})
-                .on("click", function(d){
-                    return d.url;
-                });
+				.on("click", function(d){
+					console.log("blabla")
+					return d.url;
+				});
 
 	});
