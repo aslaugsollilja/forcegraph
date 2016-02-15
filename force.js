@@ -1,10 +1,11 @@
 
-	// Define the dimensions of the Force graph
+	// Define the dimensions of the Force jsonData
 	var width = 1500,
 		height = 800;
 
-	// Background color for the nodes
+	// Background color for the png images
 	var nodeColor = "white";
+	var growthConstant = 1.4;
 
 	// Create a SVG container to hold the vizualization
 	// Specify the dimensions for this container
@@ -14,41 +15,47 @@
 
 	// Create a force layout object and define its properties
 	// 'charge' is how much the nodes push each other off
-	// 'linkDistance' is the length on the nodes to the center node
+	// 'linkDistance' is the length of the links between the nodes
 	var force = d3.layout.force()
 		.charge(-1500)
 		.linkDistance(180)
 		.size([width, height]);
 
 	// The static data comes from a json file
-	d3.json("links.json", function(error, graph) {
-
+	d3.json("links.json", function(error, jsonData) {
 		if (error) throw error;
+
 		// Turn on the force layout
 		force
-			.nodes(graph.nodes)
-			.links(graph.links)
+			.nodes(jsonData.nodes)
+			.links(jsonData.links)
 			.start();
 
 	// Draw the SVG lines between the nodes
 	var link = svg.selectAll(".link")
-		.data(graph.links).enter().append("line")
+		// Data bind
+		.data(jsonData.links)
+		// Enter : for new data
+		.enter().append("line")
 		.attr("class", "link")
-		.style("stroke-width", function(d) { return Math.sqrt(d.value); });
+		.style("stroke-width", function(d) { return Math.sqrt(d.diameter); });
 
 	// Draw the SVG circles
 	var node = svg.selectAll(".node")
-		.data(graph.nodes)
+		// Data bind
+		.data(jsonData.nodes)
+		// Enter : for new data
 		.enter()
 		.append("g").attr("class", "node")
+		// Apply force.drag to each element
 		.call(force.drag);
 
-	var circle = node
-		.append("circle")
-		.attr("r", function(d) { return (d.value/2) })
+	// Append circle to each node
+	node.append("circle")
+		.attr("r", function(d) { return (d.diameter/2) })
 		.style("fill", function(d) { return nodeColor; });
 
-	// Append title to the nodes
+	// Append title to each node
 	node.append("title")
 		.text(function(d) { return d.name; });
 
@@ -58,20 +65,22 @@
 			.attr("target", "_blank");
 
 	// Append image anchor on the nodes
-	var image = anchor.append("svg:image")
+	anchor.append("svg:image")
 			.attr("xlink:href", function(d) { return d.photo; })
-			.attr("x", function(d) { return -(d.value/2); })
-			.attr("y", function(d) { return -(d.value/2); })
-			.attr("height", function(d) { return d.value })
-			.attr("width", function(d) { return d.value });
+			.attr("x", function(d) { return -(d.diameter/2); })
+			.attr("y", function(d) { return -(d.diameter/2); })
+			.attr("height", function(d) { return d.diameter })
+			.attr("width", function(d) { return d.diameter });
 
 
 	force.on("tick", function() {
 		// Update position of the nodes
-		// Nodes can't go out of the box
 		node.attr("transform", function(d) {
-			var radius = d.value/2;
-			return "translate(" + [Math.max(radius, Math.min(width - radius, d.x)), Math.max(radius, Math.min(height - radius, d.y))] + ")";
+			var radius = d.diameter/2;
+			// Put constraints on the position - within bounds - nodes can't go outside of the box
+			var xPos = Math.max(radius, Math.min(width - radius, d.x));
+			var yPos = Math.max(radius, Math.min(height - radius, d.y));
+			return "translate(" + [xPos, yPos] + ")";
 		});
 
 		// Update the positions of the links
@@ -82,37 +91,40 @@
 	});
 
 	// Mouseover and Mouseout events
-	var setEvents = node
+	node
 		.on("mouseover", function(d) {
-			// Select element in current context
+			// Enlarge nodes on hover
 			d3.select(this).selectAll("image")
 				.transition()
 				.duration(700)
-				.attr("x", function(d) {
-					if(d.value < 120){return -(d.value*0.7); }
-					else{ return -(d.value/2); }
+				// modify size and position
+				.attr({
+					x : function(d) {
+					if(!d.centerNode){return -(d.diameter * (growthConstant/2)); }
+					else{ return -(d.diameter/2); }
+				},
+					y : function(d) {
+					if(!d.centerNode){return -(d.diameter * (growthConstant/2)); }
+					else{ return -(d.diameter/2); }
+				},
+					height:function(d) {
+					if(!d.centerNode){return (d.diameter * growthConstant); }
+					else{ return d.diameter; }
+				},
+					width : function(d) {
+					if(!d.centerNode){return (d.diameter * growthConstant); }
+					else{ return d.diameter; }
+				}
 				})
-				.attr("y", function(d) {
-					if(d.value < 120){return -(d.value*0.7); }
-					else{ return -(d.value/2); }
-				})
-				.attr("height", function(d) {
-					if(d.value < 120){return (d.value*1.4); }
-					else{ return d.value; }
-				})
-				.attr("width", function(d) {
-					if(d.value < 120){return (d.value*1.4); }
-					else{ return d.value; }
-				});
 			})
 
-			// Set back
+			// Return to default size and position
 			.on("mouseout", function() {
 				d3.select( this).selectAll("image")
 					.transition()
-					.attr("x", function(d) { return -(d.value/2); })
-					.attr("y", function(d) { return -(d.value/2); })
-					.attr("height", function(d) { return d.value; })
-					.attr("width", function(d) { return d.value; });
+					.attr("x", function(d) { return -(d.diameter/2); })
+					.attr("y", function(d) { return -(d.diameter/2); })
+					.attr("height", function(d) { return d.diameter; })
+					.attr("width", function(d) { return d.diameter; });
 			})
 	});
