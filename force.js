@@ -1,14 +1,13 @@
 
 	var width = 1000,
 		height = 800,
-			maxNodeSize = 50;
+		maxNodeSize = 50;
 
 	var color = "white";
 
 	var force = d3.layout.force()
 		.charge(-1500)
-		.linkDistance(150)
-		//.friction(0.5)
+		.linkDistance(160)
 		.size([width, height]);
 
 	var svg = d3.select("body").append("svg")
@@ -37,40 +36,43 @@
 
 		var circle = node
 			.append("circle")
-			.attr("r", function(d) { return (d.value/2)})
+			.attr("r", function(d) { return (d.value/2) })
 			.style("fill", function(d) { return color; });
 
 
 		node.append("title")
 			.text(function(d) { return d.name; });
 
-		node.append("svg:image")
-				.attr("xlink:href", function(d) { return d.photo; })
-				.attr("x", function(d) { return -(d.value/2);})
-				.attr("y", function(d) { return -(d.value/2);})
-				.attr("height", function(d) { return d.value})
-				.attr("width", function(d) { return d.value});
+		var anchor = node.append("svg:a")
+				.attr("xlink:href", function(d) { return d.url; })
+				.attr("target", "_blank");
 
-		node.append("svg:a")
-				.attr("xlink:href", function(d) { return d.url;});
+		var image = anchor.append("svg:image")
+				.attr("xlink:href", function(d) { return d.photo; })
+				.attr("x", function(d) { return -(d.value/2); })
+				.attr("y", function(d) { return -(d.value/2); })
+				.attr("height", function(d) { return d.value })
+				.attr("width", function(d) { return d.value });
+
+
 
 		force.on("tick", function() {
-			link.attr("x1", function (d) {
-					return d.source.x;
-				})
-				.attr("y1", function (d) {
-					return d.source.y;
-				})
-				.attr("x2", function (d) {
-					return d.target.x;
-				})
-				.attr("y2", function (d) {
-					return d.target.y;
-				});
+			
+			//node.attr("cx", function(d) { return d.x = Math.max(r, Math.min(width - r, d.x)); })
+			//	.attr("cy", function(d) { return d.y = Math.max(r, Math.min(height - r, d.y)); });
+			
 
 			node.attr("transform", function(d) {
-				return "translate(" + [d.x, d.y] + ")";
+				var radius = d.value/2;
+				return "translate(" + [Math.max(radius, Math.min(width - radius, d.x)), Math.max(radius, Math.min(height - radius, d.y))] + ")";
 			});
+
+			link.attr("x1", function (d) {return d.source.x;})
+				.attr("y1", function (d) {return d.source.y;})
+				.attr("x2", function (d) {return d.target.x;})
+				.attr("y2", function (d) {return d.target.y;});
+
+
 
 		});
 
@@ -82,25 +84,25 @@
 							.transition()
 							.duration(700)
 							.attr("x", function(d) {
-								if(d.value < 120){return -(d.value*0.7);}
+								if(d.value < 120){return -(d.value*0.7); }
 								else{
 									return -(d.value/2);
 								}
 							})
 							.attr("y", function(d) {
-								if(d.value < 120){return -(d.value*0.7);}
+								if(d.value < 120){return -(d.value*0.7); }
 								else{
 									return -(d.value/2);
 								}
 							})
 							.attr("height", function(d) {
-								if(d.value < 120){return (d.value*1.4);}
+								if(d.value < 120){return (d.value*1.4); }
 								else{
 									return d.value;
 								}
 							})
 							.attr("width", function(d) {
-								if(d.value < 120){return (d.value*1.4);}
+								if(d.value < 120){return (d.value*1.4); }
 								else{
 									return d.value;
 								}
@@ -110,14 +112,9 @@
 				.on("mouseout", function() {
 					d3.select( this).selectAll("image")
 							.transition()
-							.attr("x", function(d) { return -(d.value/2);})
-							.attr("y", function(d) { return -(d.value/2);})
-							.attr("height", function(d) { return d.value})
-							.attr("width", function(d) { return d.value});
+							.attr("x", function(d) { return -(d.value/2); })
+							.attr("y", function(d) { return -(d.value/2); })
+							.attr("height", function(d) { return d.value; })
+							.attr("width", function(d) { return d.value; });
 				})
-				.on("click", function(d){
-					console.log("blabla")
-					return d.url;
-				});
-
 	});
