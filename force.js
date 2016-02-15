@@ -12,8 +12,8 @@
 		.attr("width", width)
 		.attr("height", height);
 
-	// Create a force layout object and define its properties.
-	// 'charge' is how much the nodes push each other off.
+	// Create a force layout object and define its properties
+	// 'charge' is how much the nodes push each other off
 	// 'linkDistance' is the length on the nodes to the center node
 	var force = d3.layout.force()
 		.charge(-1500)
@@ -67,7 +67,7 @@
 
 
 	force.on("tick", function() {
-		// Update position of the nodes. 
+		// Update position of the nodes
 		// Nodes can't go out of the box
 		node.attr("transform", function(d) {
 			var radius = d.value/2;
@@ -84,7 +84,7 @@
 	// Mouseover and Mouseout events
 	var setEvents = node
 		.on("mouseover", function(d) {
-			// select element in current context
+			// Select element in current context
 			d3.select(this).selectAll("image")
 				.transition()
 				.duration(700)
