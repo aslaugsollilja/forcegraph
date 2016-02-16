@@ -5,6 +5,7 @@
 
 	// Background color for the png images
 	var nodeColor = "white";
+	// Constant for growth on nodes hover
 	var growthConstant = 1.4;
 
 	// Create a SVG container to hold the vizualization
